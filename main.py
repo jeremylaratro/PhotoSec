@@ -22,8 +22,9 @@ def rename():
 def clear():
     directory = input("Enter the directory: ")
     file_path = os.path.join(os.path.dirname(__file__), directory)
+    photos = [".jpg", ".jpeg", ".png", ".gif"]
     for file in os.listdir(file_path):
-        if file.endswith(".jpg"):
+        if file.endswith(tuple(photos)):
 
             with open(file_path+file, 'br+') as f:
 
