@@ -14,6 +14,7 @@ This script can be used as a CLI tool (interactive) or via CLI arguments and fol
           
  ```         
 >> Commands:
+> 
 > -h or --help for help -r or --rename to rename files in a directory -c or --clear to bulk clear EXIF data from files in a directory -g or --geo to bulk check if images contain GPS/location data
  
 Enter directory where photos are contained. 
