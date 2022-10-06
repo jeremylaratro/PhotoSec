@@ -5,7 +5,7 @@ Python script which allows easy bulk scrubbing of photo EXIF data as well as ren
 This script can be used as a CLI tool (interactive) or via CLI arguments and follow the prompts. \n
  - To use the CLI tool interactively, run the script without any arguments:
 ```bash
- python3 PhotoSecUtils.py
+ python3 PhotoSec.py
 ```
  - To use the CLI tool with arguments:
  ```bash
