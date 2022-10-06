@@ -3,6 +3,8 @@ import exif
 import argparse
 import signal
 import sys
+import subprocess
+import pandas as pd
 import time
 
 
@@ -39,6 +41,13 @@ class Security:
     def get_dir(self):
         directory = input("Enter the directory: ")
         return directory
+
+    def get_photos(self):
+        file_path = os.path.join(os.path.dirname(__file__), directory)
+        photos = [".jpg", ".jpeg", ".png", ".gif"]
+        for file in os.listdir(file_path):
+            if file.endswith(tuple(photos)):
+                return file
 
     def signal_handler(sig, frame):
         print('\n Are you sure you want to exit? (y/n)')
@@ -142,6 +151,34 @@ class Security:
                     else:
                         break
 
+    def image_analysis(self):
+        directory = Security.get_dir(self)
+        file_path = os.path.join(os.path.dirname(__file__), directory)
+        photos = [".jpg", ".jpeg", ".png", ".gif"]
+        for file in os.listdir(file_path):
+            if file.endswith(tuple(photos)):
+                with open(file_path + file, 'br+') as f:
+                    img = exif.Image(f)
+                    with open('exif_data5.txt', 'w') as txt:
+                        txt.write('Image Analysis: \n')
+                        arg1 = file_path + file
+                        attr = img.list_all()
+                        txt.write('\nEXIF ATTRIBUTES: \n\n')
+                        txt.write(str(attr) + '\n')
+                        txt.write('\nEXIFTOOL DATA: \n\n')
+                        e = subprocess.run(["exiftool %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
+                        txt.write(e.stdout)
+                        txt.write("\nBINWALK DATA: \n\n")
+                        b = subprocess.run(["binwalk %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
+                        txt.write(b.stdout)
+                        txt.write("\nSTRINGS DATA: \n\n")
+
+                        s = subprocess.run(["strings %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
+                        txt.write(s.stdout)
+
+
+
+
     def main(self):
         Security.welcome(self)
         signal.signal(signal.SIGINT, Security.signal_handler)
@@ -164,5 +201,13 @@ class Security:
             Security.main(self)
 
 
-if __name__ == '__main__':
-    Security("Start").main()
+# if __name__ == '__main__':
+#     Security("Start").main()
+
+img = Security("Start")
+img.image_analysis()
+# im = open('/home/aes18/Pictures/test/puppy.jpg', 'rb')
+# img = exif.Image(im)
+# att = img.list_all()
+# dtt = dir(img)
+# print(att, "\n", dtt)
