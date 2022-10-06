@@ -3,6 +3,7 @@ import exif
 import argparse
 import signal
 import sys
+
 import subprocess
 import pandas as pd
 import time
@@ -42,12 +43,14 @@ class Security:
         directory = input("Enter the directory: ")
         return directory
 
+
     def get_photos(self):
         file_path = os.path.join(os.path.dirname(__file__), directory)
         photos = [".jpg", ".jpeg", ".png", ".gif"]
         for file in os.listdir(file_path):
             if file.endswith(tuple(photos)):
                 return file
+
 
     def signal_handler(sig, frame):
         print('\n Are you sure you want to exit? (y/n)')
@@ -151,6 +154,7 @@ class Security:
                     else:
                         break
 
+
     def image_analysis(self):
         directory = Security.get_dir(self)
         file_path = os.path.join(os.path.dirname(__file__), directory)
@@ -179,6 +183,7 @@ class Security:
 
 
 
+
     def main(self):
         Security.welcome(self)
         signal.signal(signal.SIGINT, Security.signal_handler)
@@ -201,13 +206,8 @@ class Security:
             Security.main(self)
 
 
+
 # if __name__ == '__main__':
 #     Security("Start").main()
 
-img = Security("Start")
-img.image_analysis()
-# im = open('/home/aes18/Pictures/test/puppy.jpg', 'rb')
-# img = exif.Image(im)
-# att = img.list_all()
-# dtt = dir(img)
-# print(att, "\n", dtt)
+
