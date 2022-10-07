@@ -19,6 +19,10 @@ This script can be used as a CLI tool (interactive) or via CLI arguments and fol
 > - -c or --clear to bulk clear EXIF data from files in a directory 
 > - -g or --geo to bulk check if images contain GPS/location data
 > - -a or --analysis to analyze and image file for information, malicious code injection, etc. 
+
+>> Contributions
+>
+> Please feel free to offer comments, criticisms (constructive), or to contribute/add features/etc. I'm still in the early stages of my programming 'career' and am happy to take advice and ideas. 
  
 
 
