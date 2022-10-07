@@ -207,7 +207,7 @@ class Security:
 
 
 
-# if __name__ == '__main__':
-#     Security("Start").main()
+if __name__ == '__main__':
+    Security("Start").main()
 
 
