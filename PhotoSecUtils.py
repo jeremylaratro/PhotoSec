@@ -95,7 +95,7 @@ class Security:
         print(''' 
         This script can be used as a CLI tool (interactive) or via CLI arguments and follow the prompts. \n
          -- To use the CLI tool, run the script without any arguments:
-                python3 PhotoSec_old.py     
+                python3 PhotoSec.py     
         -- To use the CLI arguments, the following arguments are currently supported:
                 -h or --help for help
                 -r or --rename to rename files in a directory
@@ -199,7 +199,7 @@ class Security:
         Security.welcome(self)
         signal.signal(signal.SIGINT, Security.signal_handler)
         print("Usage: ")
-        print("python3 PhotoSec_old.py")
+        print("python3 PhotoSec.py")
         print("Options: ")
         m_inp = input("Do you want to: clear EXIF data (c), rename files (r), check for geo data (g), image analysis (a), see usage/get help (h): " ).lower()
         if m_inp == "r":
