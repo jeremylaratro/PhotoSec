@@ -1,4 +1,4 @@
-# PhotoCleaner
+# PhotoSecUtils
 Python script which allows easy bulk scrubbing of photo EXIF data as well as renaming of files using python modules promoting online safety and opsec
 
 ## Usage
