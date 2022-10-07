@@ -220,10 +220,3 @@ class Security:
 if __name__ == '__main__':
     Security("Start").main()
 
-# img = Security("Start")
-# img.check_geo()
-# im = open('/home/aes18/Pictures/test/puppy.jpg', 'rb')
-# img = exif.Image(im)
-# att = img.list_all()
-# dtt = dir(img)
-# print(att, "\n", dtt)
