@@ -126,55 +126,61 @@ class Security:
         self.continue_q()
 
     def clear_cli(self):
-        # open the files in binary / read mode
-        file_path, file = Security.get_photos(self)
-        with open(file_path + file, 'br+') as f:
-            # initialize the exif library
-            img = exif.Image(f)
-            # check if the image contains exif data
-            if img.has_exif:
-                # remove the exif data if so
-                img.delete_all()
-                # save the file
-                with open(file_path + file, 'wb') as mf:
-                    mf.write(img.get_file())
-            else:
-                print("No EXIF data found.")
-            # rename the files if option was chosen
-
-            rename = input("Would you like to rename the files also? (y/n): ")
-            if rename == 'y':
-                Security.rename_cli(self)
-            elif rename == 'n':
-                self.continue_q()
-            if rename != 'y' or rename != 'n':
-                print("Invalid input")
-                Security.clear_cli(self)
-
+        directory = Security.get_dir(self)
+        file_path = os.path.join(os.path.dirname(__file__), directory)
+        photos = [".jpg", ".jpeg", ".png", ".gif"]
+        i = 0
+        cl = 0
+        for file in os.listdir(file_path):
+            if file.endswith(tuple(photos)):
+                with open(file_path + file, 'br+') as f:
+                    img = exif.Image(f)
+                    if img.has_exif:
+                        img.delete_all()
+                        cl += 1
+                        with open(file_path + file, 'wb') as mf:
+                            mf.write(img.get_file())
+                    else:
+                        cl += 0
+                        pass
+                i += 1
+        print("EXIF data cleared from " + str(cl) + " files!")
         self.continue_q()
 
     def check_geo(self):
         file_path, file = Security.get_photos(self)
         i = 0
-        with open(file_path + file, 'br+') as f:
-            img = exif.Image(f)
-            att = img.list_all()
-            if i < len(os.listdir(file_path)):
-                if '_gps_ifd_pointer' in att:
-                    print("GPS data found in file: " + file)
-                    i += 1
-                else:
-                    print("No GPS data found in file: " + file)
-                    pass
+        gps_data = []
+        photos = [".jpg", ".jpeg", ".png", ".gif"]
+        for file in os.listdir(file_path):
+            if file.endswith(tuple(photos)):
+                with open(file_path + file, 'br+') as f:
+                    img = exif.Image(f)
+                    if img.has_exif:
+                        if i < len(os.listdir(file_path)):
+                            att = img.list_all()
+                            if 'gps_latitude' in att:
+                                gps_data.append(
+                                    'File name: ' + file + ' Lat/Long: ' + str(img.get('gps_latitude')) + str(
+                                        img.get('gps_longitude')))
+                            else:
+                                pass
+                    else:
+                        pass
+
+                i += 1
+        print(gps_data)
         self.continue_q()
 
     def image_analysis(self):
         print("This feature analyzes an image using exiftool, binwalk, strings,"
-              " and the exif module, and outputs the results to a text file for analysis.")
+              " and the exif module, and outputs the results to a text file for analysis."
+              "This features currently only works for single images at a time. ")
         file_path, file = Security.get_photos(self)
+        i = 0
         with open(file_path + file, 'br+') as f:
             img = exif.Image(f)
-            with open('exif_data.txt', 'w') as txt:
+            with open('ExifData/exif_data.txt', 'w') as txt:
                 txt.write('Image Analysis: \n')
                 arg1 = file_path + file
                 attr = img.list_all()
@@ -190,6 +196,7 @@ class Security:
 
                 s = subprocess.run(["strings %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
                 txt.write(s.stdout)
+            i += 1
         self.continue_q()
 
 
