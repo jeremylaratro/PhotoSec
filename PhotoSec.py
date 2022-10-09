@@ -150,24 +150,19 @@ class Security:
         file_path, file = Security.get_photos(self)
         i = 0
         gps_data = []
-        photos = [".jpg", ".jpeg", ".png", ".gif"]
         for file in os.listdir(file_path):
-            if file.endswith(tuple(photos)):
-                with open(file_path + file, 'br+') as f:
-                    img = exif.Image(f)
-                    if img.has_exif:
-                        if i < len(os.listdir(file_path)):
-                            att = img.list_all()
-                            if 'gps_latitude' in att:
-                                gps_data.append(
-                                    'File name: ' + file + ' Lat/Long: ' + str(img.get('gps_latitude')) + str(
-                                        img.get('gps_longitude')))
-                            else:
-                                pass
+            with open(file_path + file, 'br+') as f:
+                img = exif.Image(f)
+                att = img.list_all()
+                if i < len(os.listdir(file_path)):
+                    if '_gps_ifd_pointer' in att:
+                        print("GPS data found in file: " + file)
+                        gps_data.append('File name: ' + file + ' | (LAT, LONG)')
+                        gps_data.append(img.gps_latitude + img.gps_longitude)
+                        i += 1
                     else:
-                        pass
-
-                i += 1
+                        print("No GPS data found in file: " + file)
+                        i += 1
         print(gps_data)
         self.continue_q()
 
@@ -222,7 +217,9 @@ class Security:
             print("Please enter 'r' or 'c'")
             Security.main(self)
 
+#
+# if __name__ == '__main__':
+#     Security("Start").main()
 
-if __name__ == '__main__':
-    Security("Start").main()
-
+img = Security("Start")
+img.check_geo()
