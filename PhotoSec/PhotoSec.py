@@ -130,7 +130,9 @@ class Security:
         i = 0
         with open(file_path + file, 'br+') as f:
             img = exif.Image(f)
-            with open('../ExifData/' + str(file) + '_EXIF_data.txt', 'w') as txt:
+            # initialize an empty txt file in the ExifData directory
+            with open(os.getcwd() + '/PhotoSec/ExifData/' + file + '_analysis_.txt', 'w+') as txt:
+            # with open('/ExifData/' + str(file) + '_EXIF_data.txt', 'w') as txt:
                 txt.write('Image Analysis: \n')
                 arg1 = file_path + file
                 attr = img.list_all()
