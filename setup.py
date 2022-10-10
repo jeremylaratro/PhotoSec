@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='PhotoSecUtils',
-    version='0.2',
+    version='0.3.0',
     packages=['PhotoSec'],
     url='https://github.com/jeremylaratro/PhotoSec.git',
     license='GNU v3',
