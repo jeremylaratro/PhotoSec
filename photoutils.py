@@ -17,17 +17,11 @@ def start():
    //  \=======`-..-'======/ `\$$```````\$$```\$$``\$$$$$$```\$$$$``\$$$$$$```\$$$$$$```\$$$$$$$``\$$$$$$$ // 
   //    `-----------------'  `````````````````````````````````````````````````````````````````````````````//
       
-   --------------------------------------------------------------------------------- V0.2.0 -------------
-    
-    [+] This script contains functions to bulk clear EXIF data, check for GPS data, 
-        rename files and perform image analysis with popular tools into a single output. 
-    [+] Please note that this program will overwrite the original files. 
-        Make sure you have a backup of the files before running this program
-    [+] if you wish to preserve this data; author not responsible for any data loss.
-    [+] Author: Jeremy Laratro
-    [+] github.com/jeremylaratro
-
-    
+   --------------------------------------------------------------------------------- V0.3.0 -------------
+   [+] This script contains functions to bulk clear EXIF data, check for GPS data,      [+] Author: Jeremy Laratro                                                                  
+       rename files and perform image analysis with popular tools into a single output. [+] github.com/jeremylaratro
+   [+] Please note that this program will overwrite the original files. 
+       Make sure to create backups if you wish to retain this information elsewhere.        
                      ''')
 
     parser = argparse.ArgumentParser()

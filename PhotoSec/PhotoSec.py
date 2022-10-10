@@ -12,31 +12,6 @@ class Security:
     def __init__(self, name):
         self.name = name
 
-
-    # def welcome(self):
-    #     print('''
-    #                       Welcome to the CLI PhotoSec utils!
-    #                                     .---.
-    #                                     |[X]|
-    #                              _.==._.""""".___~__
-    #                             d __ ___.-''-. _____b
-    #                             |[__]  /."__".\ _   |
-    #                             |     /  /""\  \ (_)|
-    #                             |     \  \__/  /    |
-    #                             |      \`.__.'/     |
-    #                             \=======`-..-'======/
-    #                              `-----------------'
-    #
-    #         This script contains functions to bulk clear EXIF data, check for GPS data, and rename files.
-    #         Please note that this program will overwrite the original files.
-    #         Please make sure you have a backup of the files before running this program
-    #         if you wish to preserve this data; author not responsible for any data loss.
-    #         Author: Jeremy Laratro
-    #         github.com/jeremylaratro
-    #         Special thanks to Kenneth Leung for the EXIF library (github.com/kennethleungty)
-    #
-    #                      ''')
-
     def get_dir(self):
         print("Make sure that directory ends with '/''")
         directory = input("Enter the directory: ")
@@ -68,26 +43,6 @@ class Security:
             Security.main(self)
         else:
             exit()
-
-    # def parser(self):
-    #     parser = argparse.ArgumentParser()
-    #     parser.add_argument("-a", "--analysis", help="Analyze a photo using other open-source tools and output the "
-    #                                                  "results to a text file for analysis", action="store_true")
-    #     parser.add_argument("-r", "--rename", help="Rename files in a directory", action="store_true")
-    #     parser.add_argument("-c", "--clear", help="Clear EXIF data from files in a directory", action="store_true")
-    #     parser.add_argument("-g", "--geo", help="Bulk check if images contain GPS/location data", action="store_true")
-    #     parser.add_argument("-h", "--help", help="help docs", action="store_true")
-    #     args = parser.parse_args()
-    #     if args.rename:
-    #         Security.rename_cli(self)
-    #     elif args.clear:
-    #         Security.clear_cli(self)
-    #     elif args.geo:
-    #         Security.check_geo(self)
-    #     elif args.analysis:
-    #         Security.image_analysis(self)
-    #     elif args.help or not args.rename or not args.clear:
-    #         parser.print_help()
 
     def print_help(self):
         print("Usage: ")
@@ -201,13 +156,8 @@ class Security:
     def main(self):
         # Start the welcome function from security class
         signal.signal(signal.SIGINT, Security.signal_handler)
-
-
-        print("Usage: ")
-        print("python3 PhotoSec.py")
-        print("Options: ")
         m_inp = input(
-            "Do you want to: clear EXIF data (c), rename files (r), check for geo data (g), image analysis (a), see usage/get help (h): ").lower()
+            "Options: clear EXIF data (c), rename files (r), check for geo data (g), image analysis (a), see usage/get help (h): ").lower()
         if m_inp == "r":
             self.rename_cli()
         elif m_inp == "c":
