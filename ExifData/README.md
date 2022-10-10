@@ -1,3 +1,3 @@
-This is where EXIF analysis output files are stored.
+This is the directory where all information obtained via the -a / --analysis switch will be stored.
 
 
