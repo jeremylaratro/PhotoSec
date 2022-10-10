@@ -1,10 +1,9 @@
-import os
-import exif
 import argparse
-import signal
-import sys
+import os
 import subprocess
-
+import sys
+import exif
+import signal
 
 
 class Security:
@@ -13,29 +12,30 @@ class Security:
     def __init__(self, name):
         self.name = name
 
-    def welcome(self):
-        print('''
-                          Welcome to the CLI PhotoSec utils!  
-                                        .---.
-                                        |[X]|
-                                 _.==._.""""".___~__
-                                d __ ___.-''-. _____b
-                                |[__]  /."__".\ _   |  
-                                |     /  /""\  \ (_)|
-                                |     \  \__/  /    |
-                                |      \`.__.'/     |
-                                \=======`-..-'======/
-                                 `-----------------'       
-                         
-            This script contains functions to bulk clear EXIF data, check for GPS data, and rename files.
-            Please note that this program will overwrite the original files.
-            Please make sure you have a backup of the files before running this program 
-            if you wish to preserve this data; author not responsible for any data loss.
-            Author: Jeremy Laratro 
-            github.com/jeremylaratro
-            Special thanks to Kenneth Leung for the EXIF library (github.com/kennethleungty)   
-                         
-                         ''')
+
+    # def welcome(self):
+    #     print('''
+    #                       Welcome to the CLI PhotoSec utils!
+    #                                     .---.
+    #                                     |[X]|
+    #                              _.==._.""""".___~__
+    #                             d __ ___.-''-. _____b
+    #                             |[__]  /."__".\ _   |
+    #                             |     /  /""\  \ (_)|
+    #                             |     \  \__/  /    |
+    #                             |      \`.__.'/     |
+    #                             \=======`-..-'======/
+    #                              `-----------------'
+    #
+    #         This script contains functions to bulk clear EXIF data, check for GPS data, and rename files.
+    #         Please note that this program will overwrite the original files.
+    #         Please make sure you have a backup of the files before running this program
+    #         if you wish to preserve this data; author not responsible for any data loss.
+    #         Author: Jeremy Laratro
+    #         github.com/jeremylaratro
+    #         Special thanks to Kenneth Leung for the EXIF library (github.com/kennethleungty)
+    #
+    #                      ''')
 
     def get_dir(self):
         print("Make sure that directory ends with '/''")
@@ -53,7 +53,7 @@ class Security:
                 continue
 
     def signal_handler(sig, frame):
-        choice = input("Are you sure you want to exit? (y/n)")
+        choice = input("Are you sure you want to exit? (y/n): ")
         if choice.lower() == 'y':
             sys.exit(0)
         else:
@@ -62,32 +62,32 @@ class Security:
     def continue_q(self):
         # prompt user to continue
         # To-Do: add a continue same function option
-        print("Would you like to continue? (y/n)")
+        print("Would you like to continue? (y/n): ")
         choice = input().lower()
         if choice == 'y':
             Security.main(self)
         else:
             exit()
 
-    def parser(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-a", "--analysis", help="Analyze a photo using other open-source tools and output the "
-                                                     "results to a text file for analysis", action="store_true")
-        parser.add_argument("-r", "--rename", help="Rename files in a directory", action="store_true")
-        parser.add_argument("-c", "--clear", help="Clear EXIF data from files in a directory", action="store_true")
-        parser.add_argument("-g", "--geo", help="Bulk check if images contain GPS/location data", action="store_true")
-        parser.add_argument("-h", "--help", help="help docs", action="store_true")
-        args = parser.parse_args()
-        if args.rename:
-            Security.rename_cli(self)
-        elif args.clear:
-            Security.clear_cli(self)
-        elif args.geo:
-            Security.check_geo(self)
-        elif args.analysis:
-            Security.image_analysis(self)
-        elif args.help or not args.rename or not args.clear:
-            parser.print_help()
+    # def parser(self):
+    #     parser = argparse.ArgumentParser()
+    #     parser.add_argument("-a", "--analysis", help="Analyze a photo using other open-source tools and output the "
+    #                                                  "results to a text file for analysis", action="store_true")
+    #     parser.add_argument("-r", "--rename", help="Rename files in a directory", action="store_true")
+    #     parser.add_argument("-c", "--clear", help="Clear EXIF data from files in a directory", action="store_true")
+    #     parser.add_argument("-g", "--geo", help="Bulk check if images contain GPS/location data", action="store_true")
+    #     parser.add_argument("-h", "--help", help="help docs", action="store_true")
+    #     args = parser.parse_args()
+    #     if args.rename:
+    #         Security.rename_cli(self)
+    #     elif args.clear:
+    #         Security.clear_cli(self)
+    #     elif args.geo:
+    #         Security.check_geo(self)
+    #     elif args.analysis:
+    #         Security.image_analysis(self)
+    #     elif args.help or not args.rename or not args.clear:
+    #         parser.print_help()
 
     def print_help(self):
         print("Usage: ")
@@ -101,7 +101,7 @@ class Security:
                 -c or --clear to clear EXIF data from files in a directory
                 -g or --geo to bulk check if images contain GPS/location data
                 -a or --analysis to analyze a photo using various tools and output the results to a text file
-                
+
         ''')
         self.main()
 
@@ -109,7 +109,8 @@ class Security:
         directory = Security.get_dir(self)
         # prompt user to enter directory where files are stored
         # directory = input("Enter the directory: ")
-        name = input("Enter the file name you'd like to use (ie: RL0, RL1, RL2, etc). \nThe syntax will consist of the string you enter, plus an increasing number. \nIf you enter a number, the increasing number will be added after that (ie PHOTO2 --> PHOTO21, PHOTO22, etc): ")
+        name = input(
+            "Enter the file name you'd like to use (ie: RL0, RL1, RL2, etc). \nThe syntax will consist of the string you enter, plus an increasing number. \nIf you enter a number, the increasing number will be added after that (ie PHOTO2 --> PHOTO21, PHOTO22, etc): ")
         file_path = os.path.join(os.path.dirname(__file__), directory)
         # number each file in the directory starting with 1
         i = 1
@@ -174,52 +175,49 @@ class Security:
         i = 0
         with open(file_path + file, 'br+') as f:
             img = exif.Image(f)
-            with open('ExifData/' + str(file) + '_EXIF_data.txt', 'w') as txt:
+            with open('../ExifData/' + str(file) + '_EXIF_data.txt', 'w') as txt:
                 txt.write('Image Analysis: \n')
                 arg1 = file_path + file
                 attr = img.list_all()
                 txt.write('\nEXIF ATTRIBUTES: \n\n')
                 txt.write(str(attr) + '\n')
                 txt.write('\nEXIFTOOL DATA: \n\n')
-                e = subprocess.run(["exiftool %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
+                e = subprocess.run(["exiftool %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                   universal_newlines=True)
                 txt.write(e.stdout)
                 txt.write("\nBINWALK DATA: \n\n")
-                b = subprocess.run(["binwalk %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
+                b = subprocess.run(["binwalk %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                   universal_newlines=True)
                 txt.write(b.stdout)
                 txt.write("\nSTRINGS DATA: \n\n")
 
-                s = subprocess.run(["strings %s" % (arg1)], shell=True, text=True, capture_output=True, universal_newlines=True)
+                s = subprocess.run(["strings %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                   universal_newlines=True)
                 txt.write(s.stdout)
             i += 1
+        print("Image analysis data successfully output. Data is available in /PhotoSec/ExifData/")
         self.continue_q()
 
-
-
-
     def main(self):
-        Security.welcome(self)
+        # Start the welcome function from security class
         signal.signal(signal.SIGINT, Security.signal_handler)
+
+
         print("Usage: ")
         print("python3 PhotoSec.py")
         print("Options: ")
-        m_inp = input("Do you want to: clear EXIF data (c), rename files (r), check for geo data (g), image analysis (a), see usage/get help (h): " ).lower()
+        m_inp = input(
+            "Do you want to: clear EXIF data (c), rename files (r), check for geo data (g), image analysis (a), see usage/get help (h): ").lower()
         if m_inp == "r":
-            Security.rename_cli(self)
+            self.rename_cli()
         elif m_inp == "c":
-            Security.clear_cli(self)
+            self.clear_cli()
         elif m_inp == "g":
-            Security.check_geo(self)
+            self.check_geo()
         elif m_inp == "a":
-            Security.image_analysis(self)
+            self.image_analysis()
         elif m_inp == "h" or m_inp == "help":
-            Security.print_help(self)
+            self.print_help()
         else:
             print("Please enter 'r' or 'c'")
-            Security.main(self)
-
-#
-# if __name__ == '__main__':
-#     Security("Start").main()
-
-img = Security("Start")
-img.check_geo()
+            self.main()
