@@ -43,7 +43,6 @@ def start():
             p.image_analysis()
         else:
             p.main()
-
     else:
 
         main_start = Security('PhotoSec')

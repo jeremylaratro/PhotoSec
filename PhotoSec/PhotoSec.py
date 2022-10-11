@@ -56,6 +56,11 @@ class Security:
                 -c or --clear to clear EXIF data from files in a directory
                 -g or --geo to bulk check if images contain GPS/location data
                 -a or --analysis to analyze a photo using various tools and output the results to a text file
+        -- Errors:
+               - Ensure that you are using the proper path
+               - Ensure that a '/' is at the end of the directory path
+               - Ensure that the file extension is correct. Currently, the file must contain an extension, ie 'file' 
+               will not work, but file.jpg' will. 
 
         ''')
         self.main()
@@ -99,33 +104,37 @@ class Security:
                         cl += 0
                         pass
                 i += 1
-        print("EXIF data cleared from " + str(cl) + " files!")
+        print(f"EXIF data cleared from {cl} files!")
         self.continue_q()
 
     def check_geo(self):
-        file_path, file = Security.get_photos(self)
+        file_path, file = self.get_photos()
+        gps_data_t = {}
+        gps_data_l = []
         i = 0
-        gps_data = []
         for file in os.listdir(file_path):
-            with open(file_path + file, 'br+') as f:
+            with open(file_path + file, 'rb+') as f:
                 img = exif.Image(f)
-                att = img.list_all()
-                if i < len(os.listdir(file_path)):
-                    if '_gps_ifd_pointer' in att:
-                        print("GPS data found in file: " + file)
-                        gps_data.append('File name: ' + file + ' | (LAT, LONG)')
-                        gps_data.append(img.gps_latitude + img.gps_longitude)
+                img_atts = [img.list_all()]
+                for at in img_atts:
+                    if '_gps_ifd_pointer' in at:
+                        # check if the gps pointer exist, if it does, then append the gps data to a list and a dictionary. Only print the list, but leave
+                        # the dictionary accessible for users to more easily access specific values of the data
+                        gps_data_t[file] = {'LAT': img.gps_latitude, 'LONG': img.gps_longitude}
+                        gps_data_l.append(f'File {i}: ' + file)
+                        gps_data_l.append('LAT/LONG:')
+                        gps_data_l.append(img.gps_latitude + img.gps_longitude)
                         i += 1
                     else:
-                        print("No GPS data found in file: " + file)
                         i += 1
-        print(gps_data)
-        self.continue_q()
+        # print(gps_data_t)
+        print(gps_data_l)
 
     def image_analysis(self):
         print("This feature analyzes an image using exiftool, binwalk, strings,"
-              " and the exif module, and outputs the results to a text file for analysis."
-              "This features currently only works for single images at a time. ")
+              "file, identify, pngcheck, and the exif module. The results are output to a text file."
+              "Ensure that all images have a proper extension (ie: .jpg, .png, .gif, etc)."
+              "If they don't, use the rename function first. ")
         file_path, file = Security.get_photos(self)
         i = 0
         for file in os.listdir(file_path):
@@ -133,7 +142,7 @@ class Security:
                 with open(file_path + file, 'br+') as f:
                     img = exif.Image(f)
                     # initialize an empty txt file in the ExifData directory
-                    with open(os.getcwd() + '/ExifData/' + file + '_analysis_.txt', 'w+') as txt:
+                    with open(os.getcwd() + '/PhotoSec/ExifData/' + file + '_analysis_.txt', 'w+') as txt:
                         txt.write('Image Analysis: \n')
                         arg1 = file_path + file
                         attr = img.list_all()
