@@ -128,30 +128,47 @@ class Security:
               "This features currently only works for single images at a time. ")
         file_path, file = Security.get_photos(self)
         i = 0
-        with open(file_path + file, 'br+') as f:
-            img = exif.Image(f)
-            # initialize an empty txt file in the ExifData directory
-            with open(os.getcwd() + '/PhotoSec/ExifData/' + file + '_analysis_.txt', 'w+') as txt:
-            # with open('/ExifData/' + str(file) + '_EXIF_data.txt', 'w') as txt:
-                txt.write('Image Analysis: \n')
-                arg1 = file_path + file
-                attr = img.list_all()
-                txt.write('\nEXIF ATTRIBUTES: \n\n')
-                txt.write(str(attr) + '\n')
-                txt.write('\nEXIFTOOL DATA: \n\n')
-                e = subprocess.run(["exiftool %s" % (arg1)], shell=True, text=True, capture_output=True,
-                                   universal_newlines=True)
-                txt.write(e.stdout)
-                txt.write("\nBINWALK DATA: \n\n")
-                b = subprocess.run(["binwalk %s" % (arg1)], shell=True, text=True, capture_output=True,
-                                   universal_newlines=True)
-                txt.write(b.stdout)
-                txt.write("\nSTRINGS DATA: \n\n")
+        for file in os.listdir(file_path):
+            if i < len(os.listdir(file_path)):
+                with open(file_path + file, 'br+') as f:
+                    img = exif.Image(f)
+                    # initialize an empty txt file in the ExifData directory
+                    with open(os.getcwd() + '/ExifData/' + file + '_analysis_.txt', 'w+') as txt:
+                        txt.write('Image Analysis: \n')
+                        arg1 = file_path + file
+                        attr = img.list_all()
+                        txt.write('\nEXIF ATTRIBUTES: \n\n')
+                        txt.write(str(attr) + '\n')
+                        txt.write('\nEXIFTOOL DATA: \n\n')
+                        e = subprocess.run(["exiftool %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(e.stdout)
+                        txt.write("\nBINWALK DATA: \n\n")
+                        b = subprocess.run(["binwalk %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(b.stdout)
+                        txt.write("\nFILE DATA: \n\n")
+                        b = subprocess.run(["file %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(b.stdout)
+                        txt.write("\nBINWALK DATA: \n\n")
+                        b = subprocess.run(["binwalk %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(b.stdout)
+                        txt.write("\nIDENTIFY DATA: \n\n")
+                        b = subprocess.run(["identify %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(b.stdout)
+                        txt.write("\nPNG DATA: \n\n")
+                        b = subprocess.run(["pngcheck %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(b.stdout)
+                        txt.write("\nSTRINGS DATA: \n\n")
 
-                s = subprocess.run(["strings %s" % (arg1)], shell=True, text=True, capture_output=True,
-                                   universal_newlines=True)
-                txt.write(s.stdout)
-            i += 1
+                        s = subprocess.run(["strings %s" % (arg1)], shell=True, text=True, capture_output=True,
+                                           universal_newlines=True)
+                        txt.write(s.stdout)
+                i += 1
         print("Image analysis data successfully output. Data is available in /PhotoSec/ExifData/")
         self.continue_q()
 
