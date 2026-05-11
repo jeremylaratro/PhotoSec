@@ -35,7 +35,13 @@
 ## Requirements
 >- This project was built using Python 3.10. It may work with other versions of Python 3, but this is not guaranteed.
 >- This project has only been used and tested on Linux. 
->- Binwalk and exfitool must be installed on the system.
+>- The following external tools must be installed on the system. The image analysis function requires all of them:
+  - exiftool (package: `libimage-exiftool-perl`)
+  - binwalk (package: `binwalk`)
+  - file (package: `file` / `util-linux`)
+  - identify (package: `imagemagick`)
+  - pngcheck (package: `pngcheck`)
+  - strings (package: `binutils`)
 
 ## Sources
 > 

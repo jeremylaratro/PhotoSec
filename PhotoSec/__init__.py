@@ -2,4 +2,5 @@ from .PhotoSec import Security
 
 
 def start():
-    Security.main()
+    s = Security('PhotoSec')
+    s.main()
